@@ -5,6 +5,7 @@ import { Informationpage } from "../pages/Informationpage";
 import { Formpage } from "../pages/Formpage";
 import { Reviewpage } from "../pages/Reviewpage";
 import { Adminpage } from "../pages/Adminpage";
+import { Loginpage } from "../pages/Loginpage";
 
 export const Router = () => {
   return (
@@ -16,6 +17,7 @@ export const Router = () => {
           <Route path="/review" element={<Reviewpage />} />
           <Route path="/info" element={<Informationpage />} />
           <Route path="/admin" element={<Adminpage />} />
+          <Route path="/login" element={<Loginpage />} />
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,7 +1,3 @@
 export const Adminpage = () => {
-    return (
-        <div>
-            admin
-        </div>
-    )
-}
+  return <div>admin</div>;
+};

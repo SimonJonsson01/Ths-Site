@@ -1,7 +1,3 @@
 export const Reviewpage = () => {
-    return (
-        <div>
-            reviews
-        </div>
-    )
-}
+  return <div className="h-screen">reviews</div>;
+};
