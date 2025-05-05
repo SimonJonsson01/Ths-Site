@@ -1,0 +1,26 @@
+services:
+  database:
+    image: postgres:latest
+    container_name: ths-site-database
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: ./ths-site-backend
+    container_name: ths-site-backend
+    environment:
+      TALENT_MAPPER_DATABASE_HOST: ths-site-database
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+
+  frontend:
+    build: ./ths-site-frontend
+    container_name: ths-site-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
