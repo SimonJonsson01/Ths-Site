@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ import ths_site.backend.model.database.Review;
 import ths_site.backend.model.dto.ReviewDto;
 import ths_site.backend.service.ReviewService;
 
+@EnableMethodSecurity(prePostEnabled = true)
 @RestController
 @RequestMapping("/review")
 public class ReviewController {
@@ -71,6 +74,7 @@ public class ReviewController {
    * This function saves a new Review to the database.
    * - AS OF NOW, OK!
    */
+  @PreAuthorize("hasAnyRole('CUSTOMER')")
   @PostMapping(value = "/create", produces = "application/json")
   public ResponseEntity<ReviewDto> saveNew(@RequestBody Review review) {
     // Leta i reviewRepo om en review med customerId redan existerar
@@ -91,6 +95,7 @@ public class ReviewController {
    * This function updates a Review with data from ReviewDto.
    * - AS OF NOW, OK!
    */
+  @PreAuthorize("hasAnyRole('CUSTOMER')")
   @PutMapping(value = "/update", produces = "application/json")
   public ResponseEntity<ReviewDto> put(@RequestParam UUID id, @RequestBody ReviewDto reviewDto) {
     Optional<Review> opReview = this.reviewService.getById(id);
@@ -110,6 +115,7 @@ public class ReviewController {
    * This function deletes a Review based on it's id.
    * - AS OF NOW, OK!
    */
+  @PreAuthorize("hasAnyRole('CUSTOMER')")
   @DeleteMapping(value = "/delete", produces = "application/json")
   public ResponseEntity<UUID> delete(@RequestParam UUID id) {
     Optional<Review> opReview = this.reviewService.getById(id);

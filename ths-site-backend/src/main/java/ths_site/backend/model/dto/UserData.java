@@ -1,7 +1,7 @@
-package ths_site.backend.model;
+package ths_site.backend.model.dto;
 
-public abstract class UserData {
-  
+public class UserData {
+
   private final String firstName;
   private final String lastName;
   private final String email;
@@ -12,7 +12,7 @@ public abstract class UserData {
     this.lastName = lastName;
     this.email = email;
     this.password = password;
-}
+  }
 
   public String getFirstName() {
     return firstName;

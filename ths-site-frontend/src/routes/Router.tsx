@@ -6,6 +6,7 @@ import { Formpage } from "../pages/Formpage";
 import { Reviewpage } from "../pages/Reviewpage";
 import { Adminpage } from "../pages/Adminpage";
 import { Loginpage } from "../pages/Loginpage";
+import { SignupPage } from "../pages/Signuppage";
 
 export const Router = () => {
   return (
@@ -18,6 +19,7 @@ export const Router = () => {
           <Route path="/info" element={<Informationpage />} />
           <Route path="/admin" element={<Adminpage />} />
           <Route path="/login" element={<Loginpage />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

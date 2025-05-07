@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ import ths_site.backend.model.database.Job;
 import ths_site.backend.model.dto.JobDto;
 import ths_site.backend.service.JobService;
 
+@EnableMethodSecurity(prePostEnabled = true)
 @RestController
 @RequestMapping("/job")
 public class JobController {
@@ -32,6 +35,7 @@ public class JobController {
    * This function get all Jobs as JobDto in a List.
    * - AS OF NOW, OK!
    */
+  @PreAuthorize("hasAnyRole('ADMIN')")
   @GetMapping(produces = "application/json")
   public ResponseEntity<List<JobDto>> getAll() {
     List<JobDto> list = this.jobService.getAll().stream().map(Job::toDto).toList();
@@ -42,6 +46,7 @@ public class JobController {
   /*
    * This function finds a Job based on id.
    */
+  @PreAuthorize("hasAnyRole('ADMIN')")
   @GetMapping(value = "/searchId", produces = "application/json")
   public ResponseEntity<JobDto> getById(@RequestParam UUID id) {
     Optional<Job> opJop = this.jobService.getById(id);
@@ -57,6 +62,7 @@ public class JobController {
    * This function finds all Jobs belonging to a Customer's id.
    * - AS OF NOW, OK!
    */
+  @PreAuthorize("hasAnyRole('CUSTOMER')")
   @GetMapping(value = "/searchByCustomerId", produces = "application/json")
   public ResponseEntity<List<JobDto>> getAllByCustomerId(@RequestParam UUID id) {
     if (id == null) {
@@ -70,6 +76,7 @@ public class JobController {
    * This function saves a new Job to the database.
    * - AS OF NOW, OK!
    */
+  @PreAuthorize("hasAnyRole('CUSTOMER')")
   @PostMapping(value = "/create", produces = "application/json")
   public ResponseEntity<JobDto> saveNew(@RequestBody Job job) {
     if (job.getCreatedAt() == null) {

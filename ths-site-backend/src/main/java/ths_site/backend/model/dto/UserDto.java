@@ -1,10 +1,10 @@
 package ths_site.backend.model.dto;
 
-public class AdminDto {
+public class UserDto {
   private final String firstName;
   private final String lastName;
 
-  public AdminDto(String firstName, String lastName) {
+  public UserDto(String firstName, String lastName) {
     this.firstName = firstName;
     this.lastName = lastName;
   }
@@ -17,4 +17,3 @@ public class AdminDto {
     return firstName;
   }
 }
-
