@@ -3,9 +3,9 @@ package ths_site.backend.model.dto;
 public class JobDto {
   private final String title;
   private final String content;
-  private final CustomerDto customer;
+  private final UserDto customer;
 
-  public JobDto(String title, String content, CustomerDto customer) {
+  public JobDto(String title, String content, UserDto customer) {
     this.title = title;
     this.content = content;
     this.customer = customer;
@@ -19,7 +19,7 @@ public class JobDto {
     return content;
   }
 
-  public CustomerDto getCustomer() {
+  public UserDto getCustomer() {
     return customer;
   }
 }

@@ -8,9 +8,9 @@ public class ReviewDto {
 
   private final int score;
 
-  private final CustomerDto customer;
+  private final UserDto customer;
 
-  public ReviewDto(String title, String content, int score, CustomerDto customer) {
+  public ReviewDto(String title, String content, int score, UserDto customer) {
     this.title = title;
     this.content = content;
     this.score = score;
@@ -29,7 +29,7 @@ public class ReviewDto {
     return score;
   }
 
-  public CustomerDto getCustomer() {
+  public UserDto getCustomer() {
     return customer;
   }
 }

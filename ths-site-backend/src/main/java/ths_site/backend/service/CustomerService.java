@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import ths_site.backend.model.database.Customer;
 import ths_site.backend.model.database.Review;
-import ths_site.backend.model.dto.CustomerData;
+import ths_site.backend.model.dto.UserData;
 import ths_site.backend.repository.CustomerRepository;
 import ths_site.backend.repository.JobRepository;
 import ths_site.backend.repository.ReviewRepository;
@@ -62,7 +62,7 @@ public class CustomerService {
   }
   
   // - Bytar ut gammal data hos Customer med ny data från CustomerData
-  public Customer updateCustomer(Customer customer, CustomerData customerData) {
+  public Customer updateCustomer(Customer customer, UserData customerData) {
     customer.setFirstName(customer.getFirstName().toLowerCase().equals(customerData.getFirstName().toLowerCase())
     ? customer.getFirstName()
     : customerData.getFirstName());

@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ths_site.backend.model.database.Customer;
-import ths_site.backend.model.dto.CustomerData;
-import ths_site.backend.model.dto.CustomerDto;
+import ths_site.backend.model.dto.UserData;
+import ths_site.backend.model.dto.UserDto;
 import ths_site.backend.service.CustomerService;
 
 @RestController
@@ -34,8 +34,8 @@ public class CustomerController {
      * - AS OF NOW, OK!
      */
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<CustomerDto>> getAll() {
-        List<CustomerDto> list = this.customerService.findAll().stream().map(Customer::toDto).toList();
+    public ResponseEntity<List<UserDto>> getAll() {
+        List<UserDto> list = this.customerService.findAll().stream().map(Customer::toDto).toList();
         return ResponseEntity.ok(list);
     }
 
@@ -44,10 +44,10 @@ public class CustomerController {
      * - AS OF NOW, OK!
      */
     @GetMapping(value = "/searchId", produces = "application/json")
-    public ResponseEntity<CustomerDto> getById(@RequestParam UUID id) {
+    public ResponseEntity<UserDto> getById(@RequestParam UUID id) {
         Optional<Customer> opCustomer = this.customerService.getById(id);
         if (opCustomer.isPresent()) {
-            CustomerDto dto = opCustomer.get().toDto();
+            UserDto dto = opCustomer.get().toDto();
             return ResponseEntity.ok(dto);
         }
         return ResponseEntity.notFound().build();
@@ -58,10 +58,10 @@ public class CustomerController {
      * - AS OF NOW, OK!
      */
     @GetMapping(value = "/searchEmail", produces = "application/json")
-    public ResponseEntity<CustomerDto> getByEmail(@RequestParam String email) {
+    public ResponseEntity<UserDto> getByEmail(@RequestParam String email) {
         Optional<Customer> opCustomer = this.customerService.getByEmail(email);
         if (opCustomer.isPresent()) {
-            CustomerDto dto = opCustomer.get().toDto();
+            UserDto dto = opCustomer.get().toDto();
             return ResponseEntity.ok(dto);
         }
         return ResponseEntity.notFound().build();
@@ -74,7 +74,7 @@ public class CustomerController {
      * - AS OF NOW, OK!
      */
     @PostMapping(value = "/create", produces = "application/json")
-    public ResponseEntity<CustomerDto> saveNew(@RequestBody Customer customer) {
+    public ResponseEntity<UserDto> saveNew(@RequestBody Customer customer) {
         boolean emailPresent = this.customerService.ifEmailExists(customer.getEmail());
 
         if (emailPresent) {
@@ -96,7 +96,7 @@ public class CustomerController {
      * - AS OF NOW, OK!
      */
     @PutMapping(value = "/update", produces = "application/json")
-    public ResponseEntity<CustomerDto> put(@RequestParam String email, @RequestBody CustomerData customerData) {
+    public ResponseEntity<UserDto> put(@RequestParam String email, @RequestBody UserData customerData) {
         Optional<Customer> opCustomer = this.customerService.getByEmail(email);
         boolean emailInUse = this.customerService.ifEmailExists(customerData.getEmail());
 
