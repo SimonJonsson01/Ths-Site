@@ -7,7 +7,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import ths_site.backend.model.database.Admin;
-import ths_site.backend.model.dto.AdminData;
+import ths_site.backend.model.dto.UserData;
 import ths_site.backend.repository.AdminRepository;
 
 @Service
@@ -52,7 +52,7 @@ public class AdminService {
   }
 
   // - Bytar ut gammal data hos Admin med ny data från AdminData.
-  public Admin updateAdmin(Admin admin, AdminData adminData) {
+  public Admin updateAdmin(Admin admin, UserData adminData) {
     admin.setFirstName(admin.getFirstName().toLowerCase().equals(adminData.getFirstName().toLowerCase())
     ? admin.getFirstName()
     : adminData.getFirstName());

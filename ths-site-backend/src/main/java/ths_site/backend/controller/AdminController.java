@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ths_site.backend.model.database.Admin;
-import ths_site.backend.model.dto.AdminData;
+import ths_site.backend.model.dto.UserData;
 import ths_site.backend.service.AdminService;
 
 @RestController
@@ -31,7 +31,7 @@ public class AdminController {
    * - AS OF NOW, OK!
    */
   @GetMapping(value = "/searchById", produces = "application/json")
-  public ResponseEntity<AdminData> getById(@RequestParam UUID id) {
+  public ResponseEntity<UserData> getById(@RequestParam UUID id) {
     Optional<Admin> opAdmin = this.adminService.getById(id);
     if (opAdmin.isPresent()) {
       Admin admin = opAdmin.get();
@@ -45,7 +45,7 @@ public class AdminController {
    * - AS OF NOW, OK!
    */
   @GetMapping(value = "/searchByEmail", produces = "application/json")
-  public ResponseEntity<AdminData> getByEmail(@RequestParam String email) {
+  public ResponseEntity<UserData> getByEmail(@RequestParam String email) {
     Optional<Admin> opAdmin = this.adminService.getByEmail(email);
     if (opAdmin.isPresent()) {
       Admin admin = opAdmin.get();
@@ -60,7 +60,7 @@ public class AdminController {
    * - AS OF NOW, OK!
    */
   @PostMapping(produces = "application/json")
-  public ResponseEntity<AdminData> post(@RequestBody Admin admin) {
+  public ResponseEntity<UserData> post(@RequestBody Admin admin) {
     boolean emailPresent = this.adminService.ifEmailExists(admin.getEmail());
 
     if (emailPresent) {
@@ -80,7 +80,7 @@ public class AdminController {
    * - AS OF NOW, OK!
    */
   @PutMapping(value = "/update", produces = "application/json")
-  public ResponseEntity<AdminData> put(@RequestParam UUID id, @RequestBody AdminData adminData) {
+  public ResponseEntity<UserData> put(@RequestParam UUID id, @RequestBody UserData adminData) {
     Optional<Admin> opAdmin = this.adminService.getById(id);
     if (opAdmin.isPresent()) {
       Admin admin = opAdmin.get();

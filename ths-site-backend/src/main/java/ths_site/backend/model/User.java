@@ -6,6 +6,8 @@ import java.util.UUID;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import ths_site.backend.model.dto.UserData;
+import ths_site.backend.model.dto.UserDto;
 
 @MappedSuperclass
 public abstract class User {
@@ -78,6 +80,14 @@ public abstract class User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public UserData toData() {
+    return new UserData(firstName, lastName, email, password);
+  }
+
+  public UserDto toDto() {
+    return new UserDto(firstName, lastName);
   }
 
 }
