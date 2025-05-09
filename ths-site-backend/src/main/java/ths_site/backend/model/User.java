@@ -3,6 +3,8 @@ package ths_site.backend.model;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
@@ -10,7 +12,7 @@ import ths_site.backend.model.dto.UserData;
 import ths_site.backend.model.dto.UserDto;
 
 @MappedSuperclass
-public abstract class User {
+public abstract class User implements UserDetails {
 
   @Id
   protected UUID id;
@@ -42,6 +44,15 @@ public abstract class User {
     this.password = password;
   }
 
+  public User(UserData userData) {
+    this();
+    this.id = UUID.randomUUID();
+    this.firstName = userData.getFirstName();
+    this.lastName = userData.getLastName();
+    this.email = userData.getEmail();
+    this.password = userData.getPassword();
+  }
+
   public void setRandomId() {
     this.id = UUID.randomUUID();
   }
@@ -62,6 +73,7 @@ public abstract class User {
     return email;
   }
 
+  @Override
   public String getPassword() {
     return password;
   }

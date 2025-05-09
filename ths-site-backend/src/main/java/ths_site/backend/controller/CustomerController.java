@@ -5,6 +5,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,15 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 import ths_site.backend.model.database.Customer;
 import ths_site.backend.model.dto.UserData;
 import ths_site.backend.model.dto.UserDto;
+import ths_site.backend.service.AdminService;
 import ths_site.backend.service.CustomerService;
 
+@EnableMethodSecurity(prePostEnabled = true)
 @RestController
 @RequestMapping("/user")
 public class CustomerController {
 
+    private final AdminService adminService;
     private final CustomerService customerService;
 
-    public CustomerController(CustomerService customerService) {
+    public CustomerController(AdminService adminService, CustomerService customerService) {
+        this.adminService = adminService;
         this.customerService = customerService;
     }
 
@@ -33,6 +39,7 @@ public class CustomerController {
      * This function get all Customer as CustomerDto in a List.
      * - AS OF NOW, OK!
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<UserDto>> getAll() {
         List<UserDto> list = this.customerService.findAll().stream().map(Customer::toDto).toList();
@@ -43,6 +50,7 @@ public class CustomerController {
      * This function finds a Customer based on Id and returns a CustomerDto.
      * - AS OF NOW, OK!
      */
+    @PreAuthorize("hasAnyRole('CUSTOMER')")
     @GetMapping(value = "/searchId", produces = "application/json")
     public ResponseEntity<UserDto> getById(@RequestParam UUID id) {
         Optional<Customer> opCustomer = this.customerService.getById(id);
@@ -57,6 +65,7 @@ public class CustomerController {
      * This function finds a Customer based on it's email and returns a CustomerDto.
      * - AS OF NOW, OK!
      */
+    @PreAuthorize("hasAnyRole('CUSTOMER')")
     @GetMapping(value = "/searchEmail", produces = "application/json")
     public ResponseEntity<UserDto> getByEmail(@RequestParam String email) {
         Optional<Customer> opCustomer = this.customerService.getByEmail(email);
@@ -71,22 +80,22 @@ public class CustomerController {
      * This function saves a new Customer to database.
      * The function will check for existing Customer, by checking email.
      * TODO: Add password encoder in this function later.
+     * TODO: This function is deprecated. The new function is in AccountController.
      * - AS OF NOW, OK!
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping(value = "/create", produces = "application/json")
-    public ResponseEntity<UserDto> saveNew(@RequestBody Customer customer) {
-        boolean emailPresent = this.customerService.ifEmailExists(customer.getEmail());
+    public ResponseEntity<UserDto> saveNew(@RequestBody UserData customer) {
+        boolean emailAdminPresent = this.adminService.ifEmailExists(customer.getEmail());
+        boolean emailCustomerPresent = this.customerService.ifEmailExists(customer.getEmail());
 
-        if (emailPresent) {
+        if (emailAdminPresent && emailCustomerPresent) {
             return ResponseEntity.badRequest().build();
-        } 
-        if (customer.getId() != null) {
-            customer.setRandomId();
         }
+        
+        Customer savedCustomer = this.customerService.saveNew(customer);
 
-        this.customerService.save(customer);
-
-        return ResponseEntity.ok(customer.toDto());
+        return ResponseEntity.ok(savedCustomer.toDto());
     }
 
     /*
@@ -95,6 +104,7 @@ public class CustomerController {
      * changed.
      * - AS OF NOW, OK!
      */
+    @PreAuthorize("hasAnyRole('CUSTOMER')")
     @PutMapping(value = "/update", produces = "application/json")
     public ResponseEntity<UserDto> put(@RequestParam String email, @RequestBody UserData customerData) {
         Optional<Customer> opCustomer = this.customerService.getByEmail(email);
@@ -117,6 +127,7 @@ public class CustomerController {
      * Also removes all Jobs and Review that has connections to the Customer.
      * - AS OF NOW, OK!
      */
+    @PreAuthorize("hasAnyRole('CUSTOMER')")
     @DeleteMapping(value = "/delete")
     public ResponseEntity<UUID> delete(@RequestParam String email) {
         Optional<Customer> opCustomer = this.customerService.getByEmail(email);

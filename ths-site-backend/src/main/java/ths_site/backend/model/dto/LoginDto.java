@@ -1,7 +1,7 @@
 package ths_site.backend.model.dto;
 
 public class LoginDto {
-  
+
   private final String email;
 
   private final String password;
@@ -12,10 +12,11 @@ public class LoginDto {
   }
 
   public String getEmail() {
-    return email;
+      return email;
   }
 
   public String getPassword() {
-    return password;
+      return password;
   }
+
 }

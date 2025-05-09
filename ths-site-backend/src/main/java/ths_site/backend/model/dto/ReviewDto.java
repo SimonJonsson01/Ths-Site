@@ -29,7 +29,7 @@ public class ReviewDto {
     return score;
   }
 
-  public UserDto getCustomer() {
+  public UserDto getUser() {
     return customer;
   }
 }

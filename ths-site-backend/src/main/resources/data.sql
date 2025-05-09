@@ -56,7 +56,7 @@ VALUES
     'Simon',
     'Jönsson',
     'smn@ths.nu',
-    'abc123',
+    '$2a$10$GstuLSM/Gmiiie2NiCJ0UuxGzsoonlU6g8VEQqqD.2qcvFlpCFs9W',
     '2025-05-01 13:55:20.004188'
   ),
   (
@@ -64,7 +64,7 @@ VALUES
     'Mange',
     'Karlsson',
     'mangek@gmail.com',
-    'mangek',
+    '$2a$10$nrhcQefnRL4njNQCOOJHaO5iOjItJ.qAVUhuLJjtV6m6vXajP0PRW',
     '2025-05-01 13:55:20.004188'
   ),
   (
@@ -72,7 +72,7 @@ VALUES
     'Ola',
     'Konradsson',
     'KoolaOla@gmail.com',
-    'lösenord',
+    '$2a$10$osN6pzGvzxf9g5AFEoJGJO78PdFFJvAD0CXJKl6Q9B90cBpc2aieG',
     '2025-05-01 13:55:20.004188'
   );
 
@@ -92,7 +92,7 @@ VALUES
     'Thony',
     'Jönsson',
     'thony@ths.nu',
-    'abc123',
+    '$2a$10$GstuLSM/Gmiiie2NiCJ0UuxGzsoonlU6g8VEQqqD.2qcvFlpCFs9W',
     '2025-05-01 13:55:20.004188'
   );
 

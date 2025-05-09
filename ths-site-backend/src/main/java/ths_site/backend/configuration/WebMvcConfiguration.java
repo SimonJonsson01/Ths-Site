@@ -12,6 +12,9 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebMvcConfiguration.class);
 
+    /* 
+     * This function adds the corsAllowrdOrigin value (application.properties) as an allowed origin for CORS. (Allows frontend to communicate to backend.)
+     */
     @Value("${ths-site.cors.allowed-origins}")
     private String corsAllowedOrigin;
 
@@ -21,6 +24,5 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 .allowedOrigins(corsAllowedOrigin)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
                 LOGGER.info("Added " + corsAllowedOrigin + " as allowed CORS origin");
-
     }
 };

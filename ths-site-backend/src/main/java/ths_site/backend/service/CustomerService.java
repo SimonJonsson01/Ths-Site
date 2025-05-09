@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ths_site.backend.model.database.Customer;
@@ -17,18 +18,16 @@ import ths_site.backend.repository.ReviewRepository;
 public class CustomerService {
 
   private final CustomerRepository customerRepository;
-
   private final JobRepository jobRepository;
   private final ReviewRepository reviewRepository;
+  private final PasswordEncoder passwordEncoder;
 
-  public CustomerService(CustomerRepository customerRepository
-
-      , JobRepository jobRepository, ReviewRepository reviewRepository) {
+  public CustomerService(CustomerRepository customerRepository, JobRepository jobRepository,
+      ReviewRepository reviewRepository, PasswordEncoder passwordEncoder) {
     this.customerRepository = customerRepository;
-
     this.jobRepository = jobRepository;
     this.reviewRepository = reviewRepository;
-
+    this.passwordEncoder = passwordEncoder;
   }
 
   // - Hittar all Customers
@@ -55,29 +54,36 @@ public class CustomerService {
   public boolean ifIdExists(UUID id) {
     return this.customerRepository.existsById(id);
   }
-  
+
   // - Sparar Customer till databasen
   public Customer save(Customer customer) {
     return this.customerRepository.save(customer);
   }
-  
+
+  // - Sparar UserData (skapar nytt id) till databasen
+  public Customer saveNew(UserData customerData) {
+    Customer customer = new Customer(customerData);
+    customer.setPassword(passwordEncoder.encode(customerData.getPassword()));
+    return this.customerRepository.save(customer);
+  }
+
   // - Bytar ut gammal data hos Customer med ny data från CustomerData
-  public Customer updateCustomer(Customer customer, UserData customerData) {
-    customer.setFirstName(customer.getFirstName().toLowerCase().equals(customerData.getFirstName().toLowerCase())
-    ? customer.getFirstName()
-    : customerData.getFirstName());
-    customer.setLastName(customer.getLastName().toLowerCase().equals(customerData.getLastName().toLowerCase())
-    ? customer.getLastName()
-    : customerData.getLastName());
-    customer.setEmail(customer.getEmail().toLowerCase().equals(customerData.getEmail().toLowerCase())
-    ? customer.getEmail()
-    : customerData.getEmail());
-    customer.setPassword(customer.getPassword().toLowerCase().equals(customerData.getPassword().toLowerCase())
-    ? customer.getPassword()
-    : customerData.getPassword());
+  public Customer updateCustomer(Customer customer, UserData userData) {
+    customer.setFirstName(customer.getFirstName().toLowerCase().equals(userData.getFirstName().toLowerCase())
+        ? customer.getFirstName()
+        : userData.getFirstName());
+    customer.setLastName(customer.getLastName().toLowerCase().equals(userData.getLastName().toLowerCase())
+        ? customer.getLastName()
+        : userData.getLastName());
+    customer.setEmail(customer.getEmail().toLowerCase().equals(userData.getEmail().toLowerCase())
+        ? customer.getEmail()
+        : userData.getEmail());
+    customer.setPassword(customer.getPassword().toLowerCase().equals(userData.getPassword().toLowerCase())
+        ? customer.getPassword()
+        : userData.getPassword());
     return customer;
   }
-  
+
   // - Raderar en Customer via id, samt review och jobb som tillhör sagd Customer.
   public void deleteById(UUID id) {
     this.jobRepository.deleteAll(jobRepository.findAllByCustomerId(id));
@@ -87,4 +93,5 @@ public class CustomerService {
     }
     this.customerRepository.deleteById(id);
   }
+
 }
