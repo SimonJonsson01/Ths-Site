@@ -5,7 +5,6 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Function;
 
 import javax.crypto.KeyGenerator;
@@ -20,6 +19,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import ths_site.backend.model.User;
 
 @Service
 public class JWTService {
@@ -42,14 +42,16 @@ public class JWTService {
   // -------------------------
 
   // - Generates the JWT token
-  public String generateToken(Authentication auth, UUID id) {
+  public String generateToken(Authentication auth, User user) {
 
     // - Generate the claims (payload). It's empty to be later added claims in the
     // return-statement.
     Map<String, Object> claims = new HashMap<>();
-    claims.put("id", id);
+    claims.put("id", user.getId());
+    claims.put("name", user.getFirstName() + " " + user.getLastName());
     claims.put("email", auth.getName());
     claims.put("authorities", auth.getAuthorities());
+    claims.put("userType", user.getClass().getSimpleName().toLowerCase());
 
     System.out.println(":::" + claims.toString() + ":::");
 

@@ -1,7 +1,6 @@
 package ths_site.backend.service;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import ths_site.backend.model.User;
 import ths_site.backend.model.database.Admin;
 import ths_site.backend.model.database.Customer;
 import ths_site.backend.model.dto.LoginDto;
@@ -54,27 +54,27 @@ public class AuthenticationService {
             loginDto.getPassword()));
 
     if (auth.isAuthenticated()) {
-      UUID id = this.findIdByEmail(loginDto.getEmail());
+      User user = this.findIdByEmail(loginDto.getEmail());
       SecurityContextHolder.getContext().setAuthentication(auth);
-      String jwtString = this.jwtService.generateToken(auth, id);
+      String jwtString = this.jwtService.generateToken(auth, user);
       return jwtString;
     } else {
       throw new Error();
     }
   }
 
-  public UUID findIdByEmail(String email) {
+  public User findIdByEmail(String email) {
     Optional<Customer> opCustomer = this.customerRepository.findByEmail(email);
     if (opCustomer.isPresent()) {
       Customer user = opCustomer.get();
       
-      return user.getId();
+      return user;
     }
     Optional<Admin> opAdmin = this.adminRepository.findByEmail(email);
     if (opAdmin.isPresent()) {
       Admin user = opAdmin.get();
 
-      return user.getId();
+      return user;
     }
     throw new Error("No user with " + email + " found");
   }

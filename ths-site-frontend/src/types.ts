@@ -32,11 +32,21 @@ export interface LoginTokenResponse {
   token: string;
 }
 
-export interface JobDto {
-  title: string;
-  content: string;
-  user: UserDto;
+export interface TokenData {
+  id: string;
+  sub: string;
+  name: string;
+  userType: string;
+  iat: number;
+  exp: number;
+  email: string;
+  authorities: authority[];
 }
+
+interface authority {
+  authority: string;
+}
+
 export interface ReviewDto {
   title: string;
   score: number;

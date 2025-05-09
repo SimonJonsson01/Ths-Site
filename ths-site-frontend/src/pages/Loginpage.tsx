@@ -2,13 +2,14 @@ import { useState } from "react";
 import { LoginTokenResponse, UserLogin } from "../types";
 import { loginUser } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { useToken } from "../stores/TokenStore";
 
 export const Loginpage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("thony@ths.nu");
   const [password, setPassword] = useState("abc123");
 
-  //const { jwtToken, setJwtToken } = useToken();
+  const { jwtToken, setJwtToken } = useToken();
 
 
   const handleSubmit = async (email: string, password: string) => {
@@ -22,15 +23,17 @@ export const Loginpage = () => {
       if (response.status === 200) {
         console.log("TOKEN: ", response.token);
 
-        //const token: string = response.token;
-        //sessionStorage.setItem("token", token);
+        const token: string = response.token;
+        setJwtToken(token);
         navigate("/");
       }
     } catch {
       console.log("ERROR!");
     }
   };
-
+  if (jwtToken != null) {
+    navigate("/")
+  }
   return (
     <form
       className="border-2 bg-pink-300 mx-auto p-10 size-fit"
