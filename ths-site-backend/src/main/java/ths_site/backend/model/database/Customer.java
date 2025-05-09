@@ -42,5 +42,4 @@ public class Customer extends User {
   public String getUsername() {
     return email;
   }
-
 }

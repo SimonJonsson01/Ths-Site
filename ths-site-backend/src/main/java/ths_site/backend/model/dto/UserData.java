@@ -1,5 +1,9 @@
 package ths_site.backend.model.dto;
 
+
+/* 
+ * This class represent a User with "surface-data". This can be used as a object between UserDto and User.
+ */
 public class UserData {
 
   private final String firstName;

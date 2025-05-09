@@ -94,12 +94,12 @@ public abstract class User implements UserDetails {
     this.password = password;
   }
 
-  public UserDto toDto() {
-    return new UserDto(this.getFirstName(), this.getLastName());
+  public UserData toData() {
+    return new UserData(firstName, lastName, email, password);
   }
 
-  public UserData toData() {
-    return new UserData(this.getFirstName(), this.getLastName(), this.getEmail(), this.getPassword());
+  public UserDto toDto() {
+    return new UserDto(firstName, lastName);
   }
 
 }
