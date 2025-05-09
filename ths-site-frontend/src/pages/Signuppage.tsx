@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 export const SignupPage = () => {
   const navigate = useNavigate();
-  const [firstName, setFirstName] = useState("mange");
-  const [lastName, setLastName] = useState("baller");
+  const [firstName, setFirstName] = useState("Mange");
+  const [lastName, setLastName] = useState("Brollesson");
   const [email, setEmail] = useState("mange@baller.com");
   const [password, setPassword] = useState("abc123");
 

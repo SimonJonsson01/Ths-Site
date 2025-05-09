@@ -1,19 +1,12 @@
-import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useToken } from "../stores/TokenStore";
 
 export const Navbar = () => {
   const navigate = useNavigate();
-  const [loggedIn, setLoggedIn] = useState(
-    sessionStorage.getItem("token") != null
-  );
-
-  useEffect(() => {
-
-  }, []);
+  const { jwtToken, tokenObj, deleteJwtToken } = useToken();
 
   const logOut = () => {
-    sessionStorage.removeItem("token");
-    setLoggedIn(false);
+    deleteJwtToken();
     navigate("/");
   };
 
@@ -22,12 +15,25 @@ export const Navbar = () => {
       <Link to="/">Start</Link>
       <Link to="/info">Information</Link>
       <Link to="/review">Recensioner</Link>
-      {loggedIn ? (
-        <>
-          <Link to="/form">Ansök service</Link>
-          <button onClick={logOut}>Logga ut</button>
-        </>
+      {jwtToken ? (
+        tokenObj?.userType == "customer" ? (
+          /* Inloggad som Customer */
+          <>
+            <Link to="/form">Ansök service</Link>
+            <Link to="/writereview">Skriv recension</Link>
+            <Link to="/customer">Mina sidor</Link>
+            <button onClick={logOut}>Logga ut</button>
+          </>
+        ) : (
+          /* Inloggad som admin */
+          <>
+            <Link to="/job">Alla jobb</Link>
+            <Link to="/admin">Mina sidor</Link>
+            <button onClick={logOut}>Logga ut</button>
+          </>
+        )
       ) : (
+        /* Inte inloggad */
         <>
           <Link to="/signup">Skapa konto</Link>
           <Link to="/login">Logga in</Link>

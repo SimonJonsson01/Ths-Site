@@ -2,6 +2,7 @@ import {
   LoginTokenResponse,
   ResponseEntity,
   ReviewDto,
+  TokenData,
   User,
   UserLogin,
 } from "../types";
@@ -11,6 +12,7 @@ import {
 `${API_URL}/review`
 */
 const API_URL = import.meta.env.VITE_THS_SITE_API_URL;
+
 
 // Fetches ReviewDto in a List. PUBLIC ACCESS
 export const fetchReviews = async (): Promise<ReviewDto[]> => {
@@ -64,5 +66,19 @@ export const loginUser = async (
     console.log("--------");
     console.log(response.status);
     throw new Error(response.toString());
+  }
+};
+
+export const fetchAllJobsByCustomerId = async (jwtToken: string, tokenObj: TokenData) => {
+  if (jwtToken && tokenObj) {
+    const response = await fetch(`${API_URL}/job/searchByCustomerId?id=${tokenObj.id}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    console.log(data);
   }
 };
