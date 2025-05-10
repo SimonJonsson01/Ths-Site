@@ -12,6 +12,10 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WebMvcConfiguration.class);
 
+    /*
+     * This function adds the corsAllowrdOrigin value (application.properties) as an
+     * allowed origin for CORS. (Allows frontend to communicate to backend.)
+
     /* 
      * This function adds the corsAllowrdOrigin value (application.properties) as an allowed origin for CORS. (Allows frontend to communicate to backend.)
      */

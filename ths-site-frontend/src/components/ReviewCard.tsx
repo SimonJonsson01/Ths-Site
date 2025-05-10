@@ -6,18 +6,16 @@ interface Props {
 }
 
 export const ReviewCard = ({ review }: Props) => {
-  function getScoreAsStars(stars: number): ReactNode {
+  // This function renders the amount of stars from the ReviewDto.
+  const getScoreAsStars = (stars: number): ReactNode => {
     return (
       <div className="flex flex-row gap-2">
         {Array.from({ length: stars }, () => (
-          <div className="size-12">
-            <img src="../one-star-icon.svg" alt="*" className="size-12" />
-          </div>
+          <span className="text-yellow-400 text-6xl">★</span>
         ))}
       </div>
     );
-  }
-  /* max-w-60 */
+  };
   return (
     <div className="bg-blue-50 flex flex-col p-4 shadow rounded-2xl font-semibold w-full max-w-116 max-h-92 border-2">
       <div className="h-12 w-fit">{getScoreAsStars(review.score)}</div>

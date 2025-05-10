@@ -1,9 +1,13 @@
 package ths_site.backend.configuration;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -19,6 +23,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import ths_site.backend.service.CustomUserDetailsService;
 
@@ -26,19 +33,24 @@ import ths_site.backend.service.CustomUserDetailsService;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
+  @Value("${ths-site.cors.allowed-origins}")
+    private String corsAllowedOrigin;
+
   @Autowired
   private CustomUserDetailsService userDetailsService;
   @Autowired
   private JWTFilter jwtFilter;
 
   /*
-   * This Bean manages the security of HTTP requests.
+   * This Bean manages the security of HTTP requests. Acts as a filter for every HTTP-request sent to this backend.
    */
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
+    .cors(Customizer.withDefaults())
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(authorize -> authorize
+            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
             .requestMatchers("/auth/**").permitAll()
             .requestMatchers("/review").permitAll()
             .anyRequest().authenticated())
@@ -52,8 +64,25 @@ public class SecurityConfiguration {
     return http.build();
   }
 
+  /* 
+   * This Bean allows CORS with the frontend. 
+   * WebMvcConfiguration do not seem to be working as intended anymore after the security-branch.
+   */
+  @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of(corsAllowedOrigin));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
   /*
-   * l
+   * This Bean processes a Authentication request, using the CustomUserDetailsService.
    */
   @Bean
   public AuthenticationManager authManager(HttpSecurity http) throws Exception {
@@ -64,7 +93,7 @@ public class SecurityConfiguration {
   }
 
   /*
-   * This Bean sets the new strategy to perform the authentication.
+   * This Bean sets the strategy to perform the authentication, using the CustomUserDetailsService and PasswordEncoder.
    */
 
   @Bean

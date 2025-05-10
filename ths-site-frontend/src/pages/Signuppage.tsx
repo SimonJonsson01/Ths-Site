@@ -6,10 +6,10 @@ import { useNavigate } from "react-router-dom";
 
 export const SignupPage = () => {
   const navigate = useNavigate();
-  const [firstName, setFirstName] = useState("Mange");
-  const [lastName, setLastName] = useState("Brollesson");
-  const [email, setEmail] = useState("mange@baller.com");
-  const [password, setPassword] = useState("abc123");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   function clearInput() {
     setFirstName("");
@@ -86,10 +86,11 @@ export const SignupPage = () => {
           className="bg-blue-50 rounded p-1 w-96"
         ></input>
       </div>
-
-      <button className="rounded-xl mt-6 p-3 bg-gray-50 size-fit font-semibold cursor-pointer hover:bg-gray-200 active:bg-gray-300">
-        Skapa konto
-      </button>
+      <div className="size-full flex">
+        <button className="rounded-xl my-6 p-3 mx-auto bg-gray-50 size-fit font-semibold cursor-pointer hover:bg-gray-200 active:bg-gray-300">
+          Skapa konto
+        </button>
+      </div>
       <div className="flex gap-2 w-full justify-center">
         <span>Har du redan ett konto?</span>
         <Link className="text-blue-600" to={"/login"}>

@@ -6,11 +6,10 @@ import { useToken } from "../stores/TokenStore";
 
 export const Loginpage = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("thony@ths.nu");
-  const [password, setPassword] = useState("abc123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const { jwtToken, setJwtToken } = useToken();
-
 
   const handleSubmit = async (email: string, password: string) => {
     const user: UserLogin = {
@@ -32,7 +31,7 @@ export const Loginpage = () => {
     }
   };
   if (jwtToken != null) {
-    navigate("/")
+    navigate("/");
   }
   return (
     <form
@@ -60,12 +59,14 @@ export const Loginpage = () => {
           className="bg-blue-50 rounded p-1 w-96"
         ></input>
       </div>
-      <button
-        className="rounded-xl mt-6 p-3 bg-gray-50 size-fit font-semibold cursor-pointer hover:bg-gray-200 active:bg-gray-300"
-        type="submit"
-      >
-        Logga in
-      </button>
+      <div className="size-full flex">
+        <button
+          className="rounded-xl my-6 p-3 mx-auto bg-gray-50 size-fit font-semibold cursor-pointer hover:bg-gray-200 active:bg-gray-300"
+          type="submit"
+        >
+          Logga in
+        </button>
+      </div>
     </form>
   );
 };

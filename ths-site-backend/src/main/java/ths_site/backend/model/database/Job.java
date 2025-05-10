@@ -35,13 +35,13 @@ public class Job {
 
     public Job() {
         this.completed = false;
+        this.createdAt = LocalDateTime.now();
     }
 
-    public Job(UUID id, Customer customer, LocalDateTime createdAt, String title, String content) {
+    public Job(Customer customer, String title, String content) {
         this();
-        this.id = id;
+        this.id = UUID.randomUUID();
         this.customer = customer;
-        this.createdAt = createdAt;
         this.title = title;
         this.content = content;
     }
@@ -92,6 +92,6 @@ public class Job {
     }
 
     public JobDto toDto() {
-        return new JobDto(title, content, customer.toDto());
+        return new JobDto(title, content, createdAt, customer.toDto(), completed);
     }
 }

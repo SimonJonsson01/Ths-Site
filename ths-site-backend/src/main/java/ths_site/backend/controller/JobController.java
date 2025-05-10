@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ths_site.backend.model.database.Customer;
 import ths_site.backend.model.database.Job;
 import ths_site.backend.model.dto.JobDto;
+import ths_site.backend.model.dto.JobSenderDto;
+import ths_site.backend.service.CustomerService;
 import ths_site.backend.service.JobService;
 
 @EnableMethodSecurity(prePostEnabled = true)
@@ -25,9 +28,11 @@ import ths_site.backend.service.JobService;
 @RequestMapping("/job")
 public class JobController {
 
+  private final CustomerService customerService;
   private final JobService jobService;
 
-  public JobController(JobService jobService) {
+  public JobController(CustomerService customerService, JobService jobService) {
+    this.customerService = customerService;
     this.jobService = jobService;
   }
 
@@ -37,8 +42,20 @@ public class JobController {
    */
   @PreAuthorize("hasAnyRole('ADMIN')")
   @GetMapping(produces = "application/json")
-  public ResponseEntity<List<JobDto>> getAll() {
+  public ResponseEntity<List<JobDto>> getAllasDto() {
     List<JobDto> list = this.jobService.getAll().stream().map(Job::toDto).toList();
+    return ResponseEntity.ok(list);
+
+  }
+
+  /*
+   * This function get all Jobs in a List.
+   * - AS OF NOW, OK!
+   */
+  @PreAuthorize("hasAnyRole('ADMIN')")
+  @GetMapping(value = "/getAll", produces = "application/json")
+  public ResponseEntity<List<Job>> getAll() {
+    List<Job> list = this.jobService.getAll();
     return ResponseEntity.ok(list);
 
   }
@@ -64,11 +81,11 @@ public class JobController {
    */
   @PreAuthorize("hasAnyRole('CUSTOMER')")
   @GetMapping(value = "/searchByCustomerId", produces = "application/json")
-  public ResponseEntity<List<JobDto>> getAllByCustomerId(@RequestParam UUID id) {
+  public ResponseEntity<List<Job>> getAllByCustomerId(@RequestParam UUID id) {
     if (id == null) {
       return ResponseEntity.badRequest().build();
     }
-    List<JobDto> list = this.jobService.getAllByCustomerId(id).stream().map(Job::toDto).toList();
+    List<Job> list = this.jobService.getAllByCustomerId(id);
     return ResponseEntity.ok(list);
   }
 
@@ -78,14 +95,21 @@ public class JobController {
    */
   @PreAuthorize("hasAnyRole('CUSTOMER')")
   @PostMapping(value = "/create", produces = "application/json")
-  public ResponseEntity<JobDto> saveNew(@RequestBody Job job) {
-    if (job.getCreatedAt() == null) {
-      job.setCurrentTime();
+  public ResponseEntity<JobDto> saveNew(@RequestBody JobSenderDto jobDto) {
+    Optional<Customer> opCustomer = this.customerService.getById(jobDto.getCustomerId());
+
+    if (opCustomer.isPresent()) {
+
+      Customer customer = opCustomer.get();
+      
+      Job job = new Job(customer, jobDto.getTitle(), jobDto.getContent());
+      
+      this.jobService.save(job);
+      
+      return ResponseEntity.ok(job.toDto());
     }
-
-    this.jobService.save(job);
-
-    return ResponseEntity.ok(job.toDto());
+    
+    return ResponseEntity.notFound().build();
   }
 
   /*

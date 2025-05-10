@@ -1,3 +1,4 @@
+/* --Types related to User (Customer & Admin)-- */
 export interface UserDto {
   firstName: string;
   lastName: string;
@@ -47,9 +48,41 @@ interface authority {
   authority: string;
 }
 
+/* --Other types-- */
+
 export interface ReviewDto {
   title: string;
   score: number;
   content: string;
   user: UserDto;
+}
+
+export interface JobDto {
+  title: string;
+  content: string;
+  createdAt: Date
+  user: UserDto;
+  completed: boolean;
+}
+
+export interface Job {
+  id: string;
+  title: string;
+  content: string;
+  createdAt: Date
+  user: UserDto;
+  completed: boolean;
+}
+
+export interface JobSender {
+  title: string;
+  content: string;
+  customerId: string;
+}
+
+export interface ReviewSender {
+  title: string;
+  content: string;
+  score: number;
+  customerId: string;
 }

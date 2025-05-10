@@ -11,6 +11,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import ths_site.backend.model.dto.ReviewDto;
+import ths_site.backend.model.dto.ReviewSenderDto;
 
 @Entity
 @Table(name = "review")
@@ -34,6 +35,16 @@ public class Review {
     private LocalDateTime createdAt;
 
     public Review() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    public Review(ReviewSenderDto reviewDto, Customer customer) {
+        this();
+        this.id = UUID.randomUUID();
+        this.title = reviewDto.getTitle();
+        this.score = reviewDto.getScore();
+        this.content = reviewDto.getContent();
+        this.customer = customer;
     }
 
     public Review(UUID id, String title, int score, String content, Customer customer) {
