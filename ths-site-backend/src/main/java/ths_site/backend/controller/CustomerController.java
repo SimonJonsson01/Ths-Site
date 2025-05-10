@@ -138,4 +138,22 @@ public class CustomerController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    /*
+     * This function deletes a Customer by their id, IF the Customer exists in
+     * the
+     * database.
+     * Also removes all Jobs and Review that has connections to the Customer.
+     * - AS OF NOW, OK!
+     */
+    @PreAuthorize("hasAnyRole('CUSTOMER')")
+    @DeleteMapping(value = "/deleteById")
+    public ResponseEntity<UUID> delete(@RequestParam UUID id) {
+        Optional<Customer> opCustomer = this.customerService.getById(id);
+        if (opCustomer.isPresent()) {
+            this.customerService.deleteById(id);
+            return ResponseEntity.ok(id);
+        }
+        return ResponseEntity.ok().build();
+    }
 }

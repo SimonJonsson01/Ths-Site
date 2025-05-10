@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ths_site.backend.model.database.Customer;
 import ths_site.backend.model.database.Review;
 import ths_site.backend.model.dto.ReviewDto;
+import ths_site.backend.model.dto.ReviewSenderDto;
+import ths_site.backend.service.CustomerService;
 import ths_site.backend.service.ReviewService;
 
 @EnableMethodSecurity(prePostEnabled = true)
@@ -25,9 +28,11 @@ import ths_site.backend.service.ReviewService;
 @RequestMapping("/review")
 public class ReviewController {
 
+  private final CustomerService customerService;
   private final ReviewService reviewService;
 
-  public ReviewController(ReviewService reviewService) {
+  public ReviewController(CustomerService customerService, ReviewService reviewService) {
+    this.customerService = customerService;
     this.reviewService = reviewService;
   }
 
@@ -67,15 +72,15 @@ public class ReviewController {
       ReviewDto dto = opReview.get().toDto();
       return ResponseEntity.ok(dto);
     }
-    return ResponseEntity.notFound().build();
+    return ResponseEntity.ok().build();
   }
 
   /*
    * This function saves a new Review to the database.
-   * - AS OF NOW, OK!
+   * - DEPRECATED
    */
   @PreAuthorize("hasAnyRole('CUSTOMER')")
-  @PostMapping(value = "/create", produces = "application/json")
+  @PostMapping(value = "/createNew", produces = "application/json")
   public ResponseEntity<ReviewDto> saveNew(@RequestBody Review review) {
     // Leta i reviewRepo om en review med customerId redan existerar
     Optional<Review> opReview = this.reviewService.getByCustomerId(review.getCustomer().getId());
@@ -89,6 +94,32 @@ public class ReviewController {
     this.reviewService.save(review);
 
     return ResponseEntity.ok(review.toDto());
+  }
+
+  /*
+   * This function saves a new Review to the database.
+   * - AS OF NOW, OK!
+   */
+  @PreAuthorize("hasAnyRole('CUSTOMER')")
+  @PostMapping(value = "/create", produces = "application/json")
+  public ResponseEntity<ReviewDto> save(@RequestBody ReviewSenderDto review) {
+    // Leta i reviewRepo om en review med customerId redan existerar
+    Optional<Customer> opCustomer = this.customerService.getById(review.getCustomerId());
+
+    if (opCustomer.isPresent()) {
+      Customer customer = opCustomer.get();
+
+      Optional<Review> opReview = this.reviewService.getByCustomerId(customer.getId());
+      if (opReview.isPresent()) {
+        return ResponseEntity.badRequest().build();
+      }
+      Review newReview = new Review(review, customer);
+
+      this.reviewService.save(newReview);
+
+      return ResponseEntity.ok(newReview.toDto());
+    }
+    return ResponseEntity.badRequest().build();
   }
 
   /*
@@ -126,6 +157,32 @@ public class ReviewController {
       return ResponseEntity.ok(id);
     }
 
+    return ResponseEntity.notFound().build();
+  }
+
+  /*
+   * This function deletes a Review based on it's Customer's id.
+   * - AS OF NOW, OK!
+   */
+  @PreAuthorize("hasAnyRole('CUSTOMER')")
+  @DeleteMapping(value = "/deleteByCustomerId", produces = "application/json")
+  public ResponseEntity<UUID> deleteByCustomerId(@RequestParam UUID id) {
+    Optional<Customer> opCustomer = this.customerService.getById(id);
+
+    if (opCustomer.isPresent()) {
+
+      Optional<Review> opReview = this.reviewService.getByCustomerId(id);
+
+      if (opReview.isPresent()) {
+        Review review = opReview.get();
+
+        this.reviewService.deleteById(review.getId());
+
+        return ResponseEntity.ok(review.getId());
+      }
+
+      return ResponseEntity.notFound().build();
+    }
     return ResponseEntity.notFound().build();
   }
 
