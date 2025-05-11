@@ -46,12 +46,12 @@ export const Adminpage = () => {
   };
 
   return (
-    <div className="bg-green-300 size-full flex">
+    <div className="bg-gray-600 size-full flex p-3">
       <AccountSideBar tokenObj={tokenObj} />
       <span></span>
-      <div className="bg-green-900 border-2 mx-20 size-full">
+      <div className="mx-20 size-full">
         <form
-          className="border-2 bg-pink-300 mx-auto p-10 size-fit"
+          className="border-1 bg-gray-300 mx-auto p-10 size-fit rounded-md shadow"
           onSubmit={(ev) => {
             ev.preventDefault();
             handleNewAdmin(createNewUser(firstName, lastName, email, password));

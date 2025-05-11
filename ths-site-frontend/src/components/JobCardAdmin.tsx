@@ -27,7 +27,7 @@ export const JobCardAdmin = ({ job }: JobCardProps) => {
   };
 
   return (
-    <div className="border-2 rounded-md flex flex-col bg-amber-600 p-2">
+      <div className="border-1 bg-gray-300 p-3 my-1 flex flex-col gap-2 size-full rounded-xl">
       <span className="text-3xl my-2">{job.title}</span>
       <span>{job.user?.firstName + " " + job.user?.lastName}</span>
       <span className="p-1 py-2 bg-white rounded-md break-all">{job.content}</span>

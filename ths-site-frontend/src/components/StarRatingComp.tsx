@@ -34,8 +34,8 @@ export const StarRatingComp = ({
             className={`${
               starValue <= (hovered || rating)
                 ? "text-yellow-400"
-                : "text-gray-400"
-            } text-6xl`}
+                : "text-gray-600"
+            } text-6xl text-shadow-sm text-shadow-gray-400`}
           >
             ★
           </span>

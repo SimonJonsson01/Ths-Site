@@ -5,6 +5,5 @@ export const CustomerRoute = () => {
   const { tokenObj } = useToken();
 
   const isCustomer: any = tokenObj?.authorities.length === 1;
-  //console.log(isCustomer);
   return isCustomer ? <Outlet /> : <Navigate to={"/"} />;
 };

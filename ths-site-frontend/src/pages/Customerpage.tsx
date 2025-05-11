@@ -48,17 +48,17 @@ export const Customerpage = () => {
   };
 
   return (
-    <div className="bg-green-300 size-full flex">
+    <div className="bg-gray-600 size-full flex p-3">
       <AccountSideBar tokenObj={tokenObj} />
       <span></span>
-      <div className="bg-green-900 border-2 mx-20 size-full">
-        <div className="bg-amber-500 border-2 border-green-400 flex flex-col items-center">
-          <div className="flex gap-2 my-2">
-            <span className="text-3xl bg-amber-300">Din recension</span>
+      <div className="mx-auto md:mx-24 size-full">
+        <div className="flex flex-col items-center my-2">
+          <div className="flex gap-6 my-2">
+            <span className="text-white text-3xl font-semibold">Din recension</span>
             {review ? (
               <button
                 onClick={handleDeleteReview}
-                className="bg-red-400 p-2 rounded-md hover:bg-red-500 hover:cursor-pointer"
+                className="bg-red-400 p-2 rounded-md hover:bg-red-500 hover:cursor-pointer font-semibold shadow"
               >
                 Radera recension
               </button>
@@ -68,8 +68,8 @@ export const Customerpage = () => {
           </div>
           {review != null ? <ReviewCard review={review} /> : <span></span>}
         </div>
-        <div className="bg-red-500 border-2 border-blue-400 flex flex-col items-center px-4">
-          <span className="text-3xl bg-amber-300">Dina serivceansökan</span>
+        <div className="flex flex-col items-center p-4">
+          <span className="text-white text-3xl font-semibold">Dina serivceansökan</span>
           {loaded ? (
             jobs.map((job: Job) => <JobCard job={job} onDelete={getInfo} />)
           ) : (

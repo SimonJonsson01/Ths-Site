@@ -20,9 +20,9 @@ export const Jobpage = () => {
   }, [setJobs]);
 
   return (
-    <div>
+    <div className="size-full p-5">
       {loaded ? (
-        <div className="bg-blue-800 size-fit mx-auto">
+        <div className="mx-12 flex flex-col gap-2">
           {jobs.map((job: Job) => (
             <JobCardAdmin job={job} />
           ))}

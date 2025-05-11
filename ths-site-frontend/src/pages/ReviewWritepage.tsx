@@ -51,9 +51,9 @@ export const ReviewWritepage = () => {
   };
 
   return (
-    <div className="size-full bg-purple-300">
+    <div className="size-full pt-8">
       <form
-        className="border-2 bg-pink-300 mx-auto p-10 size-fit flex flex-col"
+        className="border-1 bg-gray-300 mx-auto p-10 size-fit flex flex-col shadow rounded-md"
         onSubmit={(ev) => {
           ev.preventDefault();
         }}
