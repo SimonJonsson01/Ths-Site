@@ -34,7 +34,7 @@ export const AccountSideBar = ({ tokenObj }: AccountSideBarProps) => {
   };
 
   return (
-    <aside className="flex flex-col border-2 w-full max-w-80 p-2">
+    <aside className="flex flex-col border-1 w-full max-w-80 p-3 rounded-2xl bg-white shadow">
       <div className="border-b-2 flex flex-col">
         <span className="text-5xl font-semibold">{tokenObj?.name}</span>
         <span className="text-xl py-2">{translateUsertype()}</span>

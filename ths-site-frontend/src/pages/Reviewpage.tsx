@@ -19,7 +19,7 @@ export const Reviewpage = () => {
 
   return (
     <div className="size-full">
-      <h3 className="text-center text-5xl font-semibold italic tracking-wide">
+      <h3 className="text-center text-5xl font-semibold italic tracking-wide py-3">
         Recensioner
       </h3>
       <div className="site-gutter py-6 flex flex-wrap gap-6 justify-evenly">
