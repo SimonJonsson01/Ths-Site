@@ -52,6 +52,12 @@ THS_SITE_CORS_URL = http://localhost:3000
 ### Database
 - Run this version of the database command: `docker run -p 5432:5432 -e POSTGRES_PASSWORD=postgres --name ths-site-database postgres:latest`.
 
+### The login for the Admin is:
+
+* Email: `ths@thonyshushallsserivce.com`
+
+* Password: `abc123`
+
 ## Docker
 **A guide of command lines, to set up parts of the project as containers in Docker.**
 ### The following commands does the following:
