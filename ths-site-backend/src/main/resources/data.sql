@@ -54,8 +54,8 @@ VALUES
   (
     '65c2b5c5-572b-4462-ade8-d827754dd9cd',
     'Simon',
-    'Jönsson',
-    'smn@ths.nu',
+    'Johnsson',
+    'simon.johnsson@gmail.com',
     '$2a$10$GstuLSM/Gmiiie2NiCJ0UuxGzsoonlU6g8VEQqqD.2qcvFlpCFs9W',
     '2025-05-01 13:55:20.004188'
   ),
@@ -90,8 +90,8 @@ VALUES
   (
     '26ecf0ae-491e-4087-bb03-1745fe9fba01',
     'Thony',
-    'Jönsson',
-    'thony@ths.nu',
+    'Hushållsservice',
+    'ths@thonyshushallsserivce.com',
     '$2a$10$GstuLSM/Gmiiie2NiCJ0UuxGzsoonlU6g8VEQqqD.2qcvFlpCFs9W',
     '2025-05-01 13:55:20.004188'
   );
